@@ -1,8 +1,14 @@
+"""
+Creates the html file to display favorite movies.
+"""
+
 import webbrowser
 import os
 import re
+import sys
+from entertainment_center import MOVIES
 
-
+# pylint: disable=invalid-name
 # Styles and scripting for the page
 main_page_head = '''
 <!DOCTYPE html>
@@ -127,9 +133,19 @@ movie_tile_content = '''
     <h2>{movie_title}</h2>
 </div>
 '''
+# pylint: enable=invalid-name
 
 
 def create_movie_tiles_content(movies):
+    """
+    Extracts the content for the HTML page from the movie objects.
+
+    Args:
+        movies (list of :py:class:`media.Movie`): List of movie objects.
+
+    Returns:
+            String content of the movie details to be put into the html page.
+    """
     # The HTML content for this section of the page
     content = ''
     for movie in movies:
@@ -151,6 +167,13 @@ def create_movie_tiles_content(movies):
 
 
 def open_movies_page(movies):
+    """
+    Accepts the list of movie objects and creates the html file containing the
+    details of the movie. Opens the html page after creating it.
+
+    Args:
+        movies (list of :py:class:`media.Movie`): List of movie objects.
+    """
     # Create or overwrite the output file
     output_file = open('fresh_tomatoes.html', 'w')
 
@@ -165,3 +188,15 @@ def open_movies_page(movies):
     # open the output file in the browser (in a new tab, if possible)
     url = os.path.abspath(output_file.name)
     webbrowser.open('file://' + url, new=2)
+
+
+def main():
+    """
+    Main function. Calls the function which generated the html page and opens
+    it on a browser.
+    """
+    open_movies_page(MOVIES)
+
+
+if __name__ == '__main__':
+    sys.exit(main())
